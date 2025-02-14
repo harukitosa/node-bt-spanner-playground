@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  server:
+    build: .
+    container_name: node-server
+    ports:
+      - "3000:3000"
+    environment:
+      - BIGTABLE_EMULATOR_HOST=bigtable:8086
+      - SPANNER_EMULATOR_HOST=spanner:9010
+    depends_on:
+      - bigtable
+      - spanner
+    volumes:
+      - .:/usr/src/app
+
+  bigtable:
+    image: google/cloud-sdk:alpine
+    container_name: bigtable-emulator
+    environment:
+      - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    command: >
+      sh -c "gcloud beta emulators bigtable start --host-port=0.0.0.0:8086 --quiet"
+    ports:
+      - "18086:8086"
+
+  spanner:
+    image: google/cloud-sdk:alpine
+    container_name: spanner-emulator
+    environment:
+      - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    command: >
+      sh -c "gcloud beta emulators spanner start --host-port=0.0.0.0:9010 --quiet"
+    ports:
+      - "19010:9010"
