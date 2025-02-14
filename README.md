@@ -8,7 +8,6 @@
 - [環境構成](#環境構成)
 - [セットアップ手順](#セットアップ手順)
 - [プロジェクト構成](#プロジェクト構成)
-- [サンプルコード](#サンプルコード)
 - [起動方法](#起動方法)
 - [クリーンアップ](#クリーンアップ)
 - [備考](#備考)
@@ -85,53 +84,6 @@
     ├── index.ts            # サーバーのエントリーポイント
     ├── bigtableSample.ts   # Bigtable Emulator 接続サンプルコード
     └── spannerSample.ts    # Spanner Emulator 接続サンプルコード
-```
-
-## サンプルコード
-
-### Bigtable 接続サンプル (`src/bigtableSample.ts`)
-
-```typescript
-import { Bigtable } from '@google-cloud/bigtable';
-
-// docker-compose により設定された環境変数から接続先を取得
-const bigtable = new Bigtable({
-  apiEndpoint: process.env.BIGTABLE_EMULATOR_HOST, // 例: "bigtable:8086"
-});
-
-async function listInstances() {
-  try {
-    const [instances] = await bigtable.getInstances();
-    console.log('Bigtable Instances:', instances);
-  } catch (error) {
-    console.error('Error listing Bigtable instances:', error);
-  }
-}
-
-listInstances();
-```
-
-### Spanner 接続サンプル (`src/spannerSample.ts`)
-
-```typescript
-import { Spanner } from '@google-cloud/spanner';
-
-// docker-compose により設定された環境変数から接続先を取得
-const spanner = new Spanner({
-  projectId: 'demo-project',  // エミュレータ用の任意のプロジェクトID
-  apiEndpoint: process.env.SPANNER_EMULATOR_HOST, // 例: "spanner:9010"
-});
-
-async function listInstances() {
-  try {
-    const [instances] = await spanner.getInstances();
-    console.log('Spanner Instances:', instances);
-  } catch (error) {
-    console.error('Error listing Spanner instances:', error);
-  }
-}
-
-listInstances();
 ```
 
 ## 起動方法
